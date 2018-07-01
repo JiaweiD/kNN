@@ -1,0 +1,21 @@
+import numpy as np
+import kNN
+from sklearn.preprocessing import MinMaxScaler
+from sklearn import neighbors
+
+def classifyPerson_skl():
+    dataMat,dataLabels = kNN.file2dataframe('datingTestSet2.txt')
+    scaler = MinMaxScaler(feature_range=(0,1)).fit(dataMat)
+    dataMatNorm = scaler.transform(dataMat)
+    model = neighbors.KNeighborsClassifier(n_neighbors = 5)
+    s = model.fit(dataMatNorm,dataLabels)
+    resultList = ['not at all','in small doses','in large doses']
+    percentTats = float(input("percentage of time spent playing video games?"))
+    ffMiles = float(input("frequent flier miles earned per year?"))
+    iceCream = float(input("liters of ice cream consumed per year?"))
+    inArr = np.array([ffMiles,percentTats,iceCream]).reshape(1,-1)
+    inArrNorm = scaler.transform(inArr)
+    result = s.predict(inArrNorm)
+    print("You will probably like this person", resultList[result[0] - 1])
+
+classifyPerson_skl()
