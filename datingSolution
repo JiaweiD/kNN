@@ -1,0 +1,15 @@
+import numpy as np
+import kNN
+
+def classifyPerson():
+    resultList = ['not at all','in small doses','in large doses']
+    percentTats = float(input("percentage of time spent playing video games?"))
+    ffMiles = float(input("frequent flier miles earned per year?"))
+    iceCream = float(input("liters of ice cream consumed per year?"))
+    datingMat,datingLabels = kNN.file2dataframe('datingTestSet2.txt')
+    normMat,ranges,minVals = kNN.autoNorm(datingMat)
+    inArr = np.array([ffMiles,percentTats,iceCream])
+    classierResult = kNN.classify0((inArr-minVals)/ranges,normMat,datingLabels,3)
+    print("You will probably like this person",resultList[classierResult-1])
+
+classifyPerson()
